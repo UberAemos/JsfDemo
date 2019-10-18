@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Demo User Management Screen</title>
+</h:head>
+<h:body>
+    <h:form id="userManagementScreen">
+        <p:dataTable id="mainTable" var="user" value="#{userManagement.users}">
+            <f:facet name="header">
+                User Management Screen
+            </f:facet>
+            <p:column headerText="Id">
+                <h:outputText value="#{user.id}"/>
+            </p:column>
+
+            <p:column headerText="Firstname">
+                <h:outputText value="#{user.firstName}"/>
+            </p:column>
+
+            <p:column headerText="Lastname">
+                <h:outputText value="#{user.lastName}"/>
+            </p:column>
+
+            <p:column headerText="Phone">
+                <h:outputText value="#{user.phone}"/>
+            </p:column>
+            <p:column>
+
+                <!-- Update Button -->
+                <p:commandButton update=":userManagementScreen:userUpdate" oncomplete="PF('userUpdateDialog').show()"
+                                 title="Update" process="@this" action="#{userManagement.initSelectedUser(user)}"/>
+
+                <!-- Delete Button -->
+                <p:commandButton update=":userManagementScreen:userDelete" oncomplete="PF('userDeleteDialog').show()"
+                                 title="Delete" process="@this" action="#{userManagement.initSelectedUser(user)}"/>
+            </p:column>
+
+            <!-- Create Button -->
+            <f:facet name="footer">
+                <p:commandButton oncomplete="PF('userCreateDialog').show()"
+                                 title="Create" process="@this"/>
+            </f:facet>
+
+        </p:dataTable>
+
+        <!-- Update Dialog -->
+        <p:dialog header="Update User" widgetVar="userUpdateDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false">
+            <p:outputPanel id="userUpdate">
+                <h:form id="updateForm">
+                    <div class="ui-fluid">
+                        <p:messages id="errors"/>
+                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                     styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel for="updateFirstName" value="First Name"/>
+                            <p:inputText id="updateFirstName"
+                                         required="true"
+                                         value="#{userManagement.newFirstName}"/>
+
+                            <p:outputLabel for="updateLastName" value="Last Name"/>
+                            <p:inputText id="updateLastName"
+                                         value="#{userManagement.newLastName}"/>
+                            <p:outputLabel for="updatePhone" value="Phone"/>
+                            <p:inputMask id="updatePhone" mask="(999) 999-9999"
+                                         value="#{userManagement.newPhone}"/>
+                        </p:panelGrid>
+                    </div>
+                    <p:commandButton value="Update" update="updateForm :userManagementScreen:mainTable" process="@form"
+                                     action="#{userManagement.updateUser}" oncomplete="if (!args.validationFailed){PF('userUpdateDialog').hide()}" />
+                </h:form>
+            </p:outputPanel>
+        </p:dialog>
+
+        <!-- Create Dialog -->
+        <p:dialog header="Create User" widgetVar="userCreateDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false">
+            <p:outputPanel id="userCreate">
+                <h:form id="createForm">
+                    <div class="ui-fluid">
+                        <p:messages />
+                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                     styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel for="createFirstName" value="First Name"/>
+                            <p:inputText id="createFirstName"
+                                         required="true"
+                                         value="#{userManagement.newFirstName}">
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:outputLabel for="createLastName" value="Last Name"/>
+                            <p:inputText id="createLastName"
+                                         required="true"
+                                         value="#{userManagement.newLastName}">
+                                <f:validateLength minimum="2"/>
+                            </p:inputText>
+                            <p:outputLabel for="createPhone" value="Phone"/>
+                            <p:inputMask id="createPhone" mask="(999) 999-9999"
+                                         value="#{userManagement.newPhone}"/>
+                        </p:panelGrid>
+                    </div>
+                    <p:commandButton value="Create" update="createForm :userManagementScreen:mainTable" process="@form"
+                                     action="#{userManagement.createUser}" oncomplete="if (!args.validationFailed){PF('userCreateDialog').hide()}"/>
+                </h:form>
+            </p:outputPanel>
+        </p:dialog>
+
+        <!-- Delete Dialog -->
+        <p:dialog header="Delete User" widgetVar="userDeleteDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false">
+            <p:outputPanel id="userDelete">
+                <h:form id="formDelete">
+                    <h:outputText value="Delete #{userManagement.newFirstName}?"/>
+                    <p:commandButton value="Delete" update=":userManagementScreen:mainTable" process="@form"
+                                     action="#{userManagement.deleteUser}" oncomplete="PF('userDeleteDialog').hide()"/>
+                </h:form>
+            </p:outputPanel>
+        </p:dialog>
+
+    </h:form>
+</h:body>
+</html>
