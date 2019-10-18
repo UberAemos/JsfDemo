@@ -1,0 +1,17 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui">
+    <p:dialog header="Delete User" widgetVar="userDeleteDialog"
+              modal="true" showEffect="fade" hideEffect="fade"
+              resizable="false">
+        <p:outputPanel id="userDelete">
+            <h:form id="formDelete">
+                <h:outputText value="Delete #{userValidation.newFirstName}?"/>
+                <p:commandButton value="Delete" update=":userManagementScreen:mainTable" process="@form"
+                                 action="#{userManagement.deleteUser}" oncomplete="PF('userDeleteDialog').hide()"/>
+            </h:form>
+        </p:outputPanel>
+    </p:dialog>
+</ui:component>

@@ -1,0 +1,37 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui">
+    <p:dialog header="Create User" widgetVar="userCreateDialog" modal="true" showEffect="fade" hideEffect="fade"
+              resizable="false">
+        <p:outputPanel id="userCreate">
+            <h:form id="createForm">
+                <div class="ui-fluid">
+                    <p:messages/>
+                    <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                 styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel for="createFirstName" value="First Name"/>
+                        <p:inputText id="createFirstName"
+                                     required="true"
+                                     value="#{userValidation.newFirstName}">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:outputLabel for="createLastName" value="Last Name"/>
+                        <p:inputText id="createLastName"
+                                     required="true"
+                                     value="#{userValidation.newLastName}">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:outputLabel for="createPhone" value="Phone"/>
+                        <p:inputMask id="createPhone" mask="(999) 999-9999"
+                                     value="#{userValidation.newPhone}"/>
+                    </p:panelGrid>
+                </div>
+                <p:commandButton value="Create" update="createForm :userManagementScreen:mainTable" process="@form"
+                                 action="#{userManagement.createUser}"
+                                 oncomplete="if (!args.validationFailed){PF('userCreateDialog').hide()}"/>
+            </h:form>
+        </p:outputPanel>
+    </p:dialog>
+</ui:component>

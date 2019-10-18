@@ -1,0 +1,43 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui">
+    <p:dataTable id="mainTable" var="user" value="#{userManagement.users}">
+        <f:facet name="header">
+            User Management Screen
+        </f:facet>
+        <p:column headerText="Id">
+            <h:outputText value="#{user.id}"/>
+        </p:column>
+
+        <p:column headerText="Firstname">
+            <h:outputText value="#{user.firstName}"/>
+        </p:column>
+
+        <p:column headerText="Lastname">
+            <h:outputText value="#{user.lastName}"/>
+        </p:column>
+
+        <p:column headerText="Phone">
+            <h:outputText value="#{user.phone}"/>
+        </p:column>
+        <p:column>
+
+            <!-- Update Button -->
+            <p:commandButton oncomplete="PF('userUpdateDialog').show()" update=":userManagementScreen:userUpdate"
+                             title="Update" process="@this" action="#{userValidation.initSelectedUser(user)}"/>
+
+            <!-- Delete Button -->
+            <p:commandButton update=":userManagementScreen:userDelete" oncomplete="PF('userDeleteDialog').show()"
+                             title="Delete" process="@this" action="#{userValidation.initSelectedUser(user)}"/>
+        </p:column>
+
+        <!-- Create Button -->
+        <f:facet name="footer">
+            <p:commandButton oncomplete="PF('userCreateDialog').show()"
+                             title="Create" process="@this"/>
+        </f:facet>
+
+    </p:dataTable>
+</ui:component>

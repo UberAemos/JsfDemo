@@ -16,14 +16,14 @@ import java.util.List;
 public class UserManagement {
 
     @Autowired
+    private UserValidation userValidation;
+
+    @Autowired
     private UserRepository userRepository;
 
     private final Logger logger = LoggerFactory.getLogger(UserManagement.class);
 
     private List<User> users;
-
-    private int newId;
-    private String newFirstName, newLastName, newPhone;
 
     public UserManagement() {
     }
@@ -34,40 +34,34 @@ public class UserManagement {
     }
 
     public void nullSelectedUser() {
-        newId = 0;
-        newFirstName = null;
-        newLastName = null;
-        newPhone = null;
+        userValidation.nullSelectedUser();
     }
 
     public void initSelectedUser(User user) {
-        newId = user.getId();
-        newFirstName = user.getFirstName();
-        newLastName = user.getLastName();
-        newPhone = user.getPhone();
+        userValidation.initSelectedUser(user);
     }
 
     public void updateUser() {
         logger.info("Updating user");
-        User user = new User(newId, newFirstName, newLastName, newPhone);
+        User user = userValidation.getUser();
         userRepository.updateUser(user);
         users = userRepository.getUserList();
-        nullSelectedUser();
+        userValidation.nullSelectedUser();
     }
 
     public void createUser() {
         logger.info("Creating user");
-        User user = new User(0, newFirstName, newLastName, newPhone);
+        User user = new User(0, userValidation.getNewFirstName(), userValidation.getNewLastName(), userValidation.getNewPhone());
         userRepository.createUser(user);
         users = userRepository.getUserList();
-        nullSelectedUser();
+        userValidation.nullSelectedUser();
     }
 
     public void deleteUser() {
         logger.info("Deleting user");
-        userRepository.deleteUser(newId);
+        userRepository.deleteUser(userValidation.getNewId());
         users = userRepository.getUserList();
-        nullSelectedUser();
+        userValidation.nullSelectedUser();
     }
 
     // Getters and setters
@@ -81,34 +75,34 @@ public class UserManagement {
     }
 
     public int getNewId() {
-        return newId;
+        return userValidation.getNewId();
     }
 
     public void setNewId(int newId) {
-        this.newId = newId;
+        userValidation.setNewId(newId);
     }
 
     public String getNewFirstName() {
-        return newFirstName;
+        return userValidation.getNewFirstName();
     }
 
     public void setNewFirstName(String newFirstName) {
-        this.newFirstName = newFirstName;
+        userValidation.setNewFirstName(newFirstName);
     }
 
     public String getNewLastName() {
-        return newLastName;
+        return userValidation.getNewLastName();
     }
 
     public void setNewLastName(String newLastName) {
-        this.newLastName = newLastName;
+        userValidation.setNewLastName(newLastName);
     }
 
     public String getNewPhone() {
-        return newPhone;
+        return userValidation.getNewPhone();
     }
 
     public void setNewPhone(String newPhone) {
-        this.newPhone = newPhone;
+        userValidation.setNewPhone(newPhone);
     }
 }

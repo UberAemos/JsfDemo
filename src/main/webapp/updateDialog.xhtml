@@ -1,0 +1,34 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <p:dialog header="Update User" widgetVar="userUpdateDialog" modal="true" showEffect="fade" hideEffect="fade"
+              resizable="false">
+        <p:outputPanel id="userUpdate">
+            <h:form id="updateForm">
+                <div class="ui-fluid">
+                    <p:messages id="errors"/>
+                    <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+                                 styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel for="updateFirstName" value="First Name"/>
+                        <p:inputText id="updateFirstName"
+                                     required="true"
+                                     value="#{userValidation.newFirstName}"/>
+
+                        <p:outputLabel for="updateLastName" value="Last Name"/>
+                        <p:inputText id="updateLastName"
+                                     value="#{userValidation.newLastName}"/>
+
+                        <p:outputLabel for="updatePhone" value="Phone"/>
+                        <p:inputMask id="updatePhone" mask="(999) 999-9999"
+                                     value="#{userValidation.newPhone}"/>
+                    </p:panelGrid>
+                </div>
+                <p:commandButton value="Update" update="updateForm :userManagementScreen:mainTable" process="@form"
+                                 action="#{userManagement.updateUser}"
+                                 oncomplete="if (!args.validationFailed){PF('userUpdateDialog').hide()}"/>
+            </h:form>
+        </p:outputPanel>
+    </p:dialog>
+</ui:component>

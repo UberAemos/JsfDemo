@@ -11,115 +11,18 @@
 </h:head>
 <h:body>
     <h:form id="userManagementScreen">
-        <p:dataTable id="mainTable" var="user" value="#{userManagement.users}">
-            <f:facet name="header">
-                User Management Screen
-            </f:facet>
-            <p:column headerText="Id">
-                <h:outputText value="#{user.id}"/>
-            </p:column>
 
-            <p:column headerText="Firstname">
-                <h:outputText value="#{user.firstName}"/>
-            </p:column>
-
-            <p:column headerText="Lastname">
-                <h:outputText value="#{user.lastName}"/>
-            </p:column>
-
-            <p:column headerText="Phone">
-                <h:outputText value="#{user.phone}"/>
-            </p:column>
-            <p:column>
-
-                <!-- Update Button -->
-                <p:commandButton update=":userManagementScreen:userUpdate" oncomplete="PF('userUpdateDialog').show()"
-                                 title="Update" process="@this" action="#{userManagement.initSelectedUser(user)}"/>
-
-                <!-- Delete Button -->
-                <p:commandButton update=":userManagementScreen:userDelete" oncomplete="PF('userDeleteDialog').show()"
-                                 title="Delete" process="@this" action="#{userManagement.initSelectedUser(user)}"/>
-            </p:column>
-
-            <!-- Create Button -->
-            <f:facet name="footer">
-                <p:commandButton oncomplete="PF('userCreateDialog').show()"
-                                 title="Create" process="@this"/>
-            </f:facet>
-
-        </p:dataTable>
+        <!-- User Table -->
+        <ui:include src="userDataTable.xhtml"/>
 
         <!-- Update Dialog -->
-        <p:dialog header="Update User" widgetVar="userUpdateDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
-            <p:outputPanel id="userUpdate">
-                <h:form id="updateForm">
-                    <div class="ui-fluid">
-                        <p:messages id="errors"/>
-                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
-                                     styleClass="ui-panelgrid-blank ui-fluid">
-                            <p:outputLabel for="updateFirstName" value="First Name"/>
-                            <p:inputText id="updateFirstName"
-                                         required="true"
-                                         value="#{userManagement.newFirstName}"/>
-
-                            <p:outputLabel for="updateLastName" value="Last Name"/>
-                            <p:inputText id="updateLastName"
-                                         value="#{userManagement.newLastName}"/>
-                            <p:outputLabel for="updatePhone" value="Phone"/>
-                            <p:inputMask id="updatePhone" mask="(999) 999-9999"
-                                         value="#{userManagement.newPhone}"/>
-                        </p:panelGrid>
-                    </div>
-                    <p:commandButton value="Update" update="updateForm :userManagementScreen:mainTable" process="@form"
-                                     action="#{userManagement.updateUser}" oncomplete="if (!args.validationFailed){PF('userUpdateDialog').hide()}" />
-                </h:form>
-            </p:outputPanel>
-        </p:dialog>
+        <ui:include src="/updateDialog.xhtml" />
 
         <!-- Create Dialog -->
-        <p:dialog header="Create User" widgetVar="userCreateDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
-            <p:outputPanel id="userCreate">
-                <h:form id="createForm">
-                    <div class="ui-fluid">
-                        <p:messages />
-                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
-                                     styleClass="ui-panelgrid-blank ui-fluid">
-                            <p:outputLabel for="createFirstName" value="First Name"/>
-                            <p:inputText id="createFirstName"
-                                         required="true"
-                                         value="#{userManagement.newFirstName}">
-                                <f:validateLength minimum="2" />
-                            </p:inputText>
-                            <p:outputLabel for="createLastName" value="Last Name"/>
-                            <p:inputText id="createLastName"
-                                         required="true"
-                                         value="#{userManagement.newLastName}">
-                                <f:validateLength minimum="2"/>
-                            </p:inputText>
-                            <p:outputLabel for="createPhone" value="Phone"/>
-                            <p:inputMask id="createPhone" mask="(999) 999-9999"
-                                         value="#{userManagement.newPhone}"/>
-                        </p:panelGrid>
-                    </div>
-                    <p:commandButton value="Create" update="createForm :userManagementScreen:mainTable" process="@form"
-                                     action="#{userManagement.createUser}" oncomplete="if (!args.validationFailed){PF('userCreateDialog').hide()}"/>
-                </h:form>
-            </p:outputPanel>
-        </p:dialog>
+        <ui:include src="/createDialog.xhtml" />
 
         <!-- Delete Dialog -->
-        <p:dialog header="Delete User" widgetVar="userDeleteDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
-            <p:outputPanel id="userDelete">
-                <h:form id="formDelete">
-                    <h:outputText value="Delete #{userManagement.newFirstName}?"/>
-                    <p:commandButton value="Delete" update=":userManagementScreen:mainTable" process="@form"
-                                     action="#{userManagement.deleteUser}" oncomplete="PF('userDeleteDialog').hide()"/>
-                </h:form>
-            </p:outputPanel>
-        </p:dialog>
+        <ui:include src="deleteDialog.xhtml"/>
 
     </h:form>
 </h:body>
